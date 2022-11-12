@@ -1,6 +1,5 @@
 package fr.hndgy.testcrystal.services;
 
-import org.apache.lucene.util.SloppyMath;
 import org.springframework.stereotype.Component;
 
 import fr.hndgy.testcrystal.models.PositionGPS;
