@@ -12,7 +12,7 @@ Application permettant de :
 mvn package
 java -jar ./target/test-crystal-0.0.1-SNAPSHOT.jar
 ```
-2. Puis démarer le projet React
+2. Puis démarrer le projet React
 ```
 npm install
 npm start
