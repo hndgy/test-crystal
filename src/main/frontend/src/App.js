@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import CalculDistanceForm from "./components/CalculDistanceForm";
+import CreateForm from "./components/CreateForm";
+import ListPosition from "./components/ListPosition";
 import PositionService from "./services/PositionService";
 
 function App() {
   const [positions, setPositions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [distance, setDistance] = useState();
   useEffect(() => {
     PositionService.getAll().then(res => res.json())
       .then(data => {
@@ -49,76 +51,13 @@ function App() {
       )
   }
 
-  const getDistance = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const idFrom = formData.get("idFrom");
-    const idTo = formData.get("idTo");
-    if(idFrom && idTo){
-      PositionService.getDistance(idFrom, idTo).then(resp => resp.json())
-              .then(data => setDistance(data))
-    }
-    else {
-      setDistance(null)
-    }
-  }
 
   return (
-    <div>
-      <form name="createForm" onSubmit={handleCreate}>
-        <label>
-          Longitude :
-        <input name="longitude"/>
-        </label>
-        <label>
-          Latitude :
-        <input name="latitude" />
-        </label>
-        <button type="submit">Créer</button>
-      </form>
-      {
-      (!loading &&
-          positions.map(pos =>
-            <p key={pos.id}>[id : {pos.id}] = longitude : <b>{pos.longitude}</b>, latitude : <b>{pos.latitude}</b> 
-                <button onClick={() => handleDelete(pos.id)}>supprimer</button>
-            </p>
-          )
-        )|| <p>Chargement...</p>
-        }
-
-      <h2>Calcul distance</h2>
-      <form name="calculForm" onSubmit={getDistance}>
-
-      <span>De </span>
-      <select disabled={loading} name="idFrom">
-        <option value={null}>Veuillez choisir une position</option>
-        {positions.map(pos => 
-          <option value={pos.id} key={pos.id} > 
-                  {pos.id} long:{pos.longitude},lat:{pos.latitude}
-          </option>
-          )
-        }
-      </select> 
-      <span> à </span> 
-      <select disabled={loading} name="idTo">
-        <option value={null}>Veuillez choisir une position</option>
-
-        {positions.map(pos => 
-            <option value={pos.id} key={pos.id} > 
-                      {pos.id} long:{pos.longitude},lat:{pos.latitude}
-                    </option>
-          )
-        }
-      </select>
-      <div>
-        <button>Calculer</button>
-      </div>
-      </form>
-
-      {distance &&
-        <p>Distance = <b>{distance}</b> km {distance <= 10. ? "(<10km)" : ""}</p>
-      }
+    <div className="container">
+      <CreateForm handleCreate={handleCreate} />
+      <ListPosition handleDelete={handleDelete} positions={positions} loading={loading}/>
+      <CalculDistanceForm loading={loading} positions={positions}/>
+     
     </div>
   );
 }
