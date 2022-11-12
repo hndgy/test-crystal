@@ -47,7 +47,8 @@ public class PositionServiceImpl implements PositionService{
         log.info("Get distance from {} to {}", idFrom, idTo);
         var positionFrom = this.positionGPSRepository.findById(idFrom).orElseThrow(PositionNotFoundException::new);
         var positionTo = this.positionGPSRepository.findById(idTo).orElseThrow(PositionNotFoundException::new);
-        return distanceCalcul.distance(positionFrom, positionTo);
+        var res = distanceCalcul.distance(positionFrom, positionTo);
+        return res;
     }
     
 }

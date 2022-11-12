@@ -8,6 +8,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,13 +39,13 @@ public class PositionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathParam("id") Long id){
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         this.positionService.deletePosition(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{idFrom}/distance/{idTo}")
-    public ResponseEntity<Double> getDistance(@PathParam("idFrom") Long idFrom,@PathParam("idTo") Long idTo ) throws PositionNotFoundException{
+    public ResponseEntity<Double> getDistance(@PathVariable("idFrom") Long idFrom,@PathVariable("idTo") Long idTo ) throws PositionNotFoundException{
         Double res = this.positionService.getDistance(idFrom, idTo);
         return ResponseEntity.ok(res);
     }

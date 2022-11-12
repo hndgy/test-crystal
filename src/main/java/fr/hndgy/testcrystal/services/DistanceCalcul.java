@@ -1,5 +1,6 @@
 package fr.hndgy.testcrystal.services;
 
+import org.apache.lucene.util.SloppyMath;
 import org.springframework.stereotype.Component;
 
 import fr.hndgy.testcrystal.models.PositionGPS;
@@ -8,15 +9,23 @@ import fr.hndgy.testcrystal.models.PositionGPS;
 public class DistanceCalcul {
     
     public double distance(PositionGPS positionFrom, PositionGPS positionTo){
-        Double latFrom = positionFrom.getLatitude();
-        Double latTo = positionTo.getLatitude();
-        Double longiFrom = positionFrom.getLongitude();
-        Double longiTo = positionTo.getLongitude();
+        double latFrom = positionFrom.getLatitude();
+        double latTo = positionTo.getLatitude();
+        double longiFrom = positionFrom.getLongitude();
+        double longiTo = positionTo.getLongitude();
 
-        return 6371. * Math.acos(
-            Math.sin(latFrom) * Math.sin(latTo)
-            +  Math.cos(latFrom) * Math.cos(latTo)
-            * Math.cos(longiTo - longiFrom)
-        );
+        double pk = (180./Math.PI);
+ 
+        double a1 = latFrom / pk;
+        double a2 = longiFrom / pk;
+        double b1 = latTo / pk;
+        double b2 = longiTo / pk;
+     
+        double t1 = Math.cos(a1)*Math.cos(a2)*Math.cos(b1)*Math.cos(b2);
+        double t2 = Math.cos(a1)*Math.sin(a2)*Math.cos(b1)*Math.sin(b2);
+        double t3 = Math.sin(a1)*Math.sin(b1);
+        double tt = Math.acos(t1 + t2 + t3);
+     
+        return 6366.*tt;
     }
 }
