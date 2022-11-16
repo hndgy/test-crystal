@@ -6,6 +6,7 @@ import java.util.List;
 import javax.websocket.server.PathParam;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class PositionController {
     private final PositionService positionService;
 
     @PostMapping
-    public ResponseEntity<PositionGPS> create(@RequestBody CreatePositionDto dto){
+    public ResponseEntity<PositionGPS> create(@RequestBody @Validated CreatePositionDto dto){
         var saved = this.positionService.createPosition(dto);
         return ResponseEntity.created(null).body(saved);
     }

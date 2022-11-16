@@ -1,9 +1,8 @@
 package fr.hndgy.testcrystal.services;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.hndgy.testcrystal.dtos.CreatePositionDto;
@@ -19,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PositionServiceImpl implements PositionService{
 
     private final PositionGPSRepository positionGPSRepository;
-    private final DistanceCalcul distanceCalcul;
+    private final EarthDistance earthDistance;
 
     @Override
     public PositionGPS createPosition(CreatePositionDto dto) {
@@ -47,8 +46,7 @@ public class PositionServiceImpl implements PositionService{
         log.info("Get distance from {} to {}", idFrom, idTo);
         var positionFrom = this.positionGPSRepository.findById(idFrom).orElseThrow(PositionNotFoundException::new);
         var positionTo = this.positionGPSRepository.findById(idTo).orElseThrow(PositionNotFoundException::new);
-        var res = distanceCalcul.distance(positionFrom, positionTo);
-        return res;
+        return earthDistance.distance(positionFrom, positionTo);
     }
     
 }

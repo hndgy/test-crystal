@@ -25,9 +25,7 @@ public class PositionGPS {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Double latitude;
+    private double latitude;
 
-    @Column(nullable = false)
-    private Double longitude;
+    private double longitude;
 }
